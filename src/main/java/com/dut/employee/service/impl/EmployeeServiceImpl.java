@@ -9,7 +9,6 @@ import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-
     private final EmployeeRepository employeeRepository;
 
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
@@ -44,5 +43,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> getEmployeesByName(String name) {
         return employeeRepository.findEmployeesByName(name);
+    }
+
+    @Override
+    public List<Employee> getEmployeesByAge(Long age) {
+        return employeeRepository.findEmployeesByAge(age);
     }
 }

@@ -1,11 +1,14 @@
 package com.dut.employee.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonFilter;
+import jdk.jfr.DataAmount;
+import net.bytebuddy.asm.Advice;
+
+import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
+@JsonFilter("filter.Employee")
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +19,10 @@ public class Employee {
     private Long age;
 
     private Long grade;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
 
     public Employee() {
     }
@@ -57,5 +64,26 @@ public class Employee {
 
     public void setGrade(Long grade) {
         this.grade = grade;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return id.equals(employee.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

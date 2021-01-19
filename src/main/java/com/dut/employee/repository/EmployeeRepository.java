@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface EmployeeRepository extends CrudRepository<Employee, Long> {
     List<Employee> findEmployeesByName(String name);
+    List<Employee> findEmployeesByAge(Long age);
 }
