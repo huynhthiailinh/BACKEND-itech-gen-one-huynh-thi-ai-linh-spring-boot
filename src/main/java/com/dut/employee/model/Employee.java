@@ -1,8 +1,6 @@
 package com.dut.employee.model;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
-import jdk.jfr.DataAmount;
-import net.bytebuddy.asm.Advice;
 
 import javax.persistence.*;
 import java.util.Objects;

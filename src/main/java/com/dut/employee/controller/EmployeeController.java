@@ -1,13 +1,10 @@
 package com.dut.employee.controller;
 
+import com.dut.employee.handleJsonFilter.EmployeeFilter;
 import com.dut.employee.model.Employee;
 import com.dut.employee.service.EmployeeService;
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,32 +24,26 @@ public class EmployeeController {
 
     @GetMapping("{id}")
     public ResponseEntity getEmployeeById(@PathVariable Long id) {
-        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(employeeService.getEmployeeById(id));
-        FilterProvider filterProvider = new SimpleFilterProvider()
-                .addFilter("filter.Employee", SimpleBeanPropertyFilter.serializeAll())
-                .addFilter("filter.Department", SimpleBeanPropertyFilter.filterOutAllExcept("name"));
-        mappingJacksonValue.setFilters(filterProvider);
-        return new ResponseEntity<>(mappingJacksonValue, HttpStatus.OK);
+        EmployeeFilter employeeFilter = new EmployeeFilter();
+        return new ResponseEntity<>(employeeFilter.getEmployee(employeeService.getEmployeeById(id)), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity getEmployees() {
-        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(employeeService.getEmployees());
-        FilterProvider filterProvider = new SimpleFilterProvider()
-                .addFilter("filter.Employee", SimpleBeanPropertyFilter.serializeAll())
-                .addFilter("filter.Department", SimpleBeanPropertyFilter.filterOutAllExcept("name"));
-        mappingJacksonValue.setFilters(filterProvider);
-        return new ResponseEntity<>(mappingJacksonValue, HttpStatus.CREATED);
+        EmployeeFilter employeeFilter = new EmployeeFilter();
+        return new ResponseEntity<>(employeeFilter.getEmployees(employeeService.getEmployees()), HttpStatus.OK);
     }
 
     @GetMapping("/age")
     public ResponseEntity getEmployeesByAge(@RequestParam("age") Long age) {
-        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(employeeService.getEmployeesByAge(age));
-        FilterProvider filterProvider = new SimpleFilterProvider()
-                .addFilter("filter.Employee", SimpleBeanPropertyFilter.serializeAll())
-                .addFilter("filter.Department", SimpleBeanPropertyFilter.filterOutAllExcept("name"));
-        mappingJacksonValue.setFilters(filterProvider);
-        return new ResponseEntity<>(mappingJacksonValue, HttpStatus.OK);
+        EmployeeFilter employeeFilter = new EmployeeFilter();
+        return new ResponseEntity<>(employeeFilter.getEmployees(employeeService.getEmployeesByAge(age)), HttpStatus.OK);
+    }
+
+    @GetMapping("/name")
+    public ResponseEntity getEmployeesByName(@RequestParam("name") String name) {
+        EmployeeFilter employeeFilter = new EmployeeFilter();
+        return new ResponseEntity<>(employeeFilter.getEmployees(employeeService.getEmployeesByName(name)), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
@@ -64,15 +55,5 @@ public class EmployeeController {
     @PutMapping
     public ResponseEntity updateEmployee(@RequestBody Employee employee) {
         return new ResponseEntity<>(employeeService.updateEmployee(employee), HttpStatus.OK);
-    }
-
-    @GetMapping("/name")
-    public ResponseEntity getEmployeesByName(@RequestParam("name") String name) {
-        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(employeeService.getEmployeesByName(name));
-        FilterProvider filterProvider = new SimpleFilterProvider()
-                .addFilter("filter.Employee", SimpleBeanPropertyFilter.serializeAll())
-                .addFilter("filter.Department", SimpleBeanPropertyFilter.filterOutAllExcept("name"));
-        mappingJacksonValue.setFilters(filterProvider);
-        return new ResponseEntity<>(mappingJacksonValue, HttpStatus.OK);
     }
 }
