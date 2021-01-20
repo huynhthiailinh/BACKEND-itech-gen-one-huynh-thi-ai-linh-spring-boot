@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/departments")
 public class DepartmentController {
     private final DepartmentService departmentService;
+    private final DepartmentFilter departmentFilter;
 
-    public DepartmentController(DepartmentService departmentService) {
+    public DepartmentController(DepartmentService departmentService, DepartmentFilter departmentFilter) {
         this.departmentService = departmentService;
+        this.departmentFilter = departmentFilter;
     }
 
     @PostMapping
@@ -24,7 +26,6 @@ public class DepartmentController {
 
     @GetMapping
     public ResponseEntity getDepartments() {
-        DepartmentFilter departmentFilter = new DepartmentFilter();
         return new ResponseEntity<>(departmentFilter.getDepartments(departmentService.getDepartments()), HttpStatus.OK);
     }
 }
