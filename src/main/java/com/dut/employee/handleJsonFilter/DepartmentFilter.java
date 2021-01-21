@@ -11,9 +11,6 @@ import java.util.List;
 
 @Component
 public class DepartmentFilter {
-    public DepartmentFilter() {
-    }
-
     public MappingJacksonValue getDepartments(List<Department> departmentList) {
         MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(departmentList);
         FilterProvider filterProvider = new SimpleFilterProvider()

@@ -1,5 +1,7 @@
 package com.dut.employee.service;
 
+import com.dut.employee.constant.DefaultParam;
+import com.dut.employee.constant.DefaultPath;
 import org.apache.commons.io.IOUtils;
 
 import org.springframework.http.ResponseEntity;
@@ -20,27 +22,28 @@ import java.nio.file.StandardCopyOption;
 @Service
 public class ImageService {
 
-    public final String storageDirectoryPath = "C:\\Users\\z\\source\\repos\\iTech Gen One\\employee\\image";
-    public ResponseEntity uploadToLocalFileSystem(MultipartFile file) {
-        /* we will extract the file name (with extension)
-        from the given file to store it in our local machine for now
-        and later in virtual machine when we'll deploy the project
-         */
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+    public final String storageDirectoryPath = DefaultPath.ROOT_FOLDER;
 
-        /* The Path in which we will store our image . we could change it later
-        based on the OS of the virtual machine in which we will deploy the project.
-        In my case i'm using windows 10 .
-         */
+    public String uploadToLocalFileSystem(MultipartFile file, String type, Long id) {
+
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         Path storageDirectory = Paths.get(storageDirectoryPath);
-        /*
-         * we'll do just a simple verification to check
-         * if the folder in which we will store our images exists or not
-         * */
-        if(!Files.exists(storageDirectory)){ // if the folder does not exist
+        String imageDir = "";
+
+        if(!Files.exists(storageDirectory)) { // if the folder does not exist
             try {
-                Files.createDirectories(storageDirectory); // we create the directory in the given storage directory path
-            }catch (Exception e){
+                Files.createDirectories(storageDirectory);
+
+                switch (type) {
+                    case DefaultParam.AVATAR:
+                        imageDir = DefaultPath.AVATAR_FOLDER;
+                        break;
+                    case DefaultParam.EVENT:
+                        imageDir = DefaultPath.EVENT_FOLDER;
+                        break;
+                }
+
+            } catch (Exception e) {
                 e.printStackTrace();// print the exception
             }
         }
@@ -53,18 +56,18 @@ public class ImageService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         // the response will be the download URL of the image
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("api/images/getImage/")
                 .path(fileName)
                 .toUriString();
         // return the download image url as a response entity
-        return ResponseEntity.ok(fileDownloadUri);
+        return fileDownloadUri;
     }
 
-    public  byte[] getImageWithMediaType(String imageName) throws IOException {
+    public byte[] getImageWithMediaType(String imageName) throws IOException {
         Path destination = Paths.get(storageDirectoryPath+"\\"+imageName);// retrieve the image by its name
-
         return IOUtils.toByteArray(destination.toUri());
     }
 

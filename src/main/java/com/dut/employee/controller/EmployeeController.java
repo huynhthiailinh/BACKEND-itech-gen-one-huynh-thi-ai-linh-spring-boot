@@ -1,8 +1,10 @@
 package com.dut.employee.controller;
 
+import com.dut.employee.dto.EmployeeDTO;
 import com.dut.employee.handleJsonFilter.EmployeeFilter;
 import com.dut.employee.model.Employee;
 import com.dut.employee.service.EmployeeService;
+import com.dut.employee.service.ImageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,14 +15,23 @@ import org.springframework.web.bind.annotation.*;
 public class EmployeeController {
     private final EmployeeService employeeService;
     private final EmployeeFilter employeeFilter;
+    private final ImageService imageService;
 
-    public EmployeeController(EmployeeService employeeService, EmployeeFilter employeeFilter) {
+    public EmployeeController(EmployeeService employeeService, EmployeeFilter employeeFilter, ImageService imageService) {
         this.employeeService = employeeService;
         this.employeeFilter = employeeFilter;
+        this.imageService = imageService;
     }
 
     @PostMapping
-    public ResponseEntity addEmployee(@RequestBody Employee employee) {
+    public ResponseEntity addEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        employee.setName(employeeDTO.getName());
+        employee.setAge(employeeDTO.getAge());
+        employee.setGrade(employeeDTO.getGrade());
+        employee.setDepartment(employeeDTO.getDepartment());
+        employee = employeeService.addEmployee(employee);
+
         return new ResponseEntity<>(employeeService.addEmployee(employee), HttpStatus.OK);
     }
 

@@ -1,6 +1,7 @@
 package com.dut.employee.model;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -18,6 +19,8 @@ public class Employee {
 
     private Long grade;
 
+    private String avatar;
+
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
@@ -25,11 +28,13 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(Long id, String name, Long age, Long grade) {
+    public Employee(Long id, String name, Long age, Long grade, String avatar, Department department) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.grade = grade;
+        this.avatar = avatar;
+        this.department = department;
     }
 
     public Long getId() {
@@ -70,6 +75,14 @@ public class Employee {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     @Override

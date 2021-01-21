@@ -11,9 +11,6 @@ import java.util.List;
 
 @Component
 public class EmployeeFilter {
-    public EmployeeFilter() {
-    }
-
     public MappingJacksonValue getEmployee(Employee employee) {
         MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(employee);
         FilterProvider filterProvider = new SimpleFilterProvider()

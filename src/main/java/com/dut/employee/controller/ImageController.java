@@ -18,13 +18,16 @@ import java.io.IOException;
 @RestController
 @RequestMapping(value = "api/images")
 public class ImageController {
-    @Autowired
-    public ImageService imageService;
+    public final ImageService imageService;
 
-    @PostMapping(value = "upload")
-    public ResponseEntity uploadImage(@RequestParam MultipartFile file) {
-        return this.imageService.uploadToLocalFileSystem(file);
+    public ImageController(ImageService imageService) {
+        this.imageService = imageService;
     }
+
+//    @PostMapping(value = "upload")
+//    public ResponseEntity uploadImage(@RequestParam MultipartFile file, @RequestParam String type) {
+//        return this.imageService.uploadToLocalFileSystem(file, type);
+//    }
 
     @GetMapping(
             value = "getImage/{imageName:.+}",
