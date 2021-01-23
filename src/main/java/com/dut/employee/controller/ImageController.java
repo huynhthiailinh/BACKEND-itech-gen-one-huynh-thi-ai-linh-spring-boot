@@ -1,7 +1,10 @@
 package com.dut.employee.controller;
 
+import com.dut.employee.constant.DefaultParam;
+import com.dut.employee.model.Employee;
+import com.dut.employee.service.EmployeeService;
 import com.dut.employee.service.ImageService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,21 +22,32 @@ import java.io.IOException;
 @RequestMapping(value = "api/images")
 public class ImageController {
     public final ImageService imageService;
+    public final EmployeeService employeeService;
 
-    public ImageController(ImageService imageService) {
+    public ImageController(ImageService imageService, EmployeeService employeeService) {
         this.imageService = imageService;
+        this.employeeService = employeeService;
     }
 
-//    @PostMapping(value = "upload")
-//    public ResponseEntity uploadImage(@RequestParam MultipartFile file, @RequestParam String type) {
-//        return this.imageService.uploadToLocalFileSystem(file, type);
-//    }
+    @PostMapping(value = "upload")
+    public ResponseEntity uploadImage(@RequestParam MultipartFile file, @RequestParam String type, @RequestParam Long id) {
+        switch (type) {
+            case DefaultParam.AVATAR:
+                Employee employee = employeeService.getEmployeeById(id);
+                employee.setAvatar(this.imageService.uploadToLocalFileSystem(file, type, id));
+                employeeService.updateEmployee(employee);
+                break;
+            case DefaultParam.EVENT:
+                break;
+        }
+        return new ResponseEntity(this.imageService.uploadToLocalFileSystem(file, type, id), HttpStatus.OK);
+    }
 
     @GetMapping(
-            value = "getImage/{imageName:.+}",
+            value = "getImage/{type}/{id}/{imageName:.+}",
             produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_PNG_VALUE}
     )
-    public @ResponseBody byte[] getImageWithMediaType(@PathVariable(name = "imageName") String fileName) throws IOException {
-        return this.imageService.getImageWithMediaType(fileName);
+    public @ResponseBody byte[] getImageWithMediaType(@PathVariable(name = "type") String type, @PathVariable(name = "id") Long id, @PathVariable(name = "imageName") String fileName) throws IOException {
+        return this.imageService.getImageWithMediaType(fileName, id, type);
     }
 }

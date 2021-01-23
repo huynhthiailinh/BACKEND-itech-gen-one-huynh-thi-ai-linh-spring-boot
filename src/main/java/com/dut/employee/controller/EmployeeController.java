@@ -1,6 +1,5 @@
 package com.dut.employee.controller;
 
-import com.dut.employee.dto.EmployeeDTO;
 import com.dut.employee.handleJsonFilter.EmployeeFilter;
 import com.dut.employee.model.Employee;
 import com.dut.employee.service.EmployeeService;
@@ -24,15 +23,9 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity addEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        Employee employee = new Employee();
-        employee.setName(employeeDTO.getName());
-        employee.setAge(employeeDTO.getAge());
-        employee.setGrade(employeeDTO.getGrade());
-        employee.setDepartment(employeeDTO.getDepartment());
-        employee = employeeService.addEmployee(employee);
-
-        return new ResponseEntity<>(employeeService.addEmployee(employee), HttpStatus.OK);
+    public ResponseEntity addEmployee(@RequestBody Employee employee) {
+        employeeService.addEmployee(employee);
+        return new ResponseEntity<>("Create succeed!", HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
