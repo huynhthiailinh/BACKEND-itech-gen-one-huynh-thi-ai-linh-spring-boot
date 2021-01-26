@@ -4,10 +4,12 @@ import com.dut.employee.handleJsonFilter.EmployeeFilter;
 import com.dut.employee.model.Employee;
 import com.dut.employee.service.EmployeeService;
 import com.dut.employee.service.ImageService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@AllArgsConstructor
 @RestController
 @CrossOrigin
 @RequestMapping("api/employees")
@@ -15,12 +17,6 @@ public class EmployeeController {
     private final EmployeeService employeeService;
     private final EmployeeFilter employeeFilter;
     private final ImageService imageService;
-
-    public EmployeeController(EmployeeService employeeService, EmployeeFilter employeeFilter, ImageService imageService) {
-        this.employeeService = employeeService;
-        this.employeeFilter = employeeFilter;
-        this.imageService = imageService;
-    }
 
     @PostMapping
     public ResponseEntity addEmployee(@RequestBody Employee employee) {
@@ -51,7 +47,7 @@ public class EmployeeController {
     @DeleteMapping("{id}")
     public ResponseEntity deleteEmployeeById(@PathVariable Long id) {
         employeeService.deleteEmployeeById(id);
-        return new ResponseEntity("Deleted", HttpStatus.OK);
+        return new ResponseEntity("Delete succeed!", HttpStatus.OK);
     }
 
     @PutMapping
