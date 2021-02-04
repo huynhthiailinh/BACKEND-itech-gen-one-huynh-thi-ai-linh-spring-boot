@@ -12,33 +12,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import java.util.Date;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
-@JsonFilter("filter.Employee")
-public class Employee {
+@JsonFilter("filter.EmployeeImage")
+public class EmployeeImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
-    private Long age;
-
-    private Long grade;
-
-    private Date createdDate = new Date(System.currentTimeMillis());
-
-    @OneToMany(mappedBy = "employee")
-    private List<EmployeeImage> employeeImages;
+    private String url;
 
     @ManyToOne
-    @JoinColumn(name = "department_id")
-    private Department department;
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 }

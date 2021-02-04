@@ -6,6 +6,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,12 +16,9 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class ImageService {
-    public final String storageDirectoryPath = DefaultPath.ROOT_FOLDER;
-
-    public String uploadToLocalFileSystem(MultipartFile file, String type, Long id) {
-
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        Path storageDirectory = Paths.get(storageDirectoryPath);
+    public String uploadToLocalFileSystem(MultipartFile multipartFile, String type, Long id) {
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        Path storageDirectory = Paths.get(DefaultPath.ROOT_FOLDER);
         String imageDir = "";
         Path imageDirPath = null;
 
@@ -35,8 +33,8 @@ public class ImageService {
                 case DefaultParam.AVATAR:
                     imageDir = DefaultPath.AVATAR_FOLDER + File.separator + id;
                     break;
-                case DefaultParam.EVENT:
-                    imageDir = DefaultPath.EVENT_FOLDER + File.separator + id;
+                case DefaultParam.DEPARTMENT:
+                    imageDir = DefaultPath.DEPARTMENT_FOLDER + File.separator + id;
                     break;
             }
 
@@ -54,12 +52,12 @@ public class ImageService {
         Path destination = Paths.get(imageDirPath.toString() + "\\" + fileName);
 
         try {
-            Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(multipartFile.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return DefaultParam.AVATAR + "/" + id + "/" + fileName;
+        return type + "/" + id + "/" + fileName;
     }
 
     public byte[] getImageWithMediaType(String imageName, Long id, String type) throws IOException {
@@ -70,8 +68,8 @@ public class ImageService {
             case DefaultParam.AVATAR:
                 imageDir = DefaultPath.AVATAR_FOLDER + File.separator + id;
                 break;
-            case DefaultParam.EVENT:
-                imageDir = DefaultPath.EVENT_FOLDER + File.separator + id;
+            case DefaultParam.DEPARTMENT:
+                imageDir = DefaultPath.DEPARTMENT_FOLDER + File.separator + id;
                 break;
         }
 
