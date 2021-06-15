@@ -12,8 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -27,4 +27,7 @@ public class Department {
 
     @OneToMany(mappedBy = "department")
     private List<Employee> employeeList;
+
+    @OneToMany(mappedBy = "department")
+    private List<Like> likes;
 }
