@@ -40,7 +40,7 @@ public class EmployeeController {
             employeeImage.setUrl(imageService.uploadToLocalFileSystem(multipartFile, DefaultParam.AVATAR, finalEmployee.getId()));
             employeeImageRepository.save(employeeImage);
         });
-        return new ResponseEntity<>("Succeed!", HttpStatus.CREATED);
+        return new ResponseEntity<>("Created!", HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
@@ -61,12 +61,12 @@ public class EmployeeController {
     @DeleteMapping("{id}")
     public ResponseEntity deleteEmployeeById(@PathVariable Long id) {
         employeeService.deleteEmployeeById(id);
-        return new ResponseEntity("Succeed!", HttpStatus.OK);
+        return new ResponseEntity("Deleted!", HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity updateEmployee(@RequestBody Employee employee) {
         employeeService.updateEmployee(employee);
-        return new ResponseEntity<>("Succeed!", HttpStatus.OK);
+        return new ResponseEntity<>("Updated!", HttpStatus.OK);
     }
 }
