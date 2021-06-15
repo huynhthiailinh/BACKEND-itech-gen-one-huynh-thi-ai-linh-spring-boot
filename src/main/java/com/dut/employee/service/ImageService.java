@@ -49,6 +49,7 @@ public class ImageService {
             }
         }
 
+        assert imageDirPath != null;
         Path destination = Paths.get(imageDirPath.toString() + "\\" + fileName);
 
         try {

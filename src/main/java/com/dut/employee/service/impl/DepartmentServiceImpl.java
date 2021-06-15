@@ -24,4 +24,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<Department> getDepartments() {
         return (List<Department>) departmentRepository.findAll();
     }
+
+    @Override
+    public Long getCountLikes() {
+        return departmentRepository.countDepartmentByLikesTrue() ;
+    }
 }

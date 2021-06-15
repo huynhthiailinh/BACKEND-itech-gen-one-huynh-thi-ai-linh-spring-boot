@@ -42,9 +42,4 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employee> getEmployeesByName(String name) {
         return employeeRepository.findEmployeesByName(name);
     }
-
-    @Override
-    public List<Employee> getEmployeesByAge(Long age) {
-        return employeeRepository.findEmployeesByAge(age);
-    }
 }

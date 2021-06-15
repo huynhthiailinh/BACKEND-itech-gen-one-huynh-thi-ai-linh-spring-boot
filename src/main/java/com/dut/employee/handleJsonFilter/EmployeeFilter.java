@@ -15,6 +15,7 @@ public class EmployeeFilter {
         MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(employee);
         FilterProvider filterProvider = new SimpleFilterProvider()
                 .addFilter("filter.Employee", SimpleBeanPropertyFilter.serializeAll())
+                .addFilter("filter.EmployeeImage", SimpleBeanPropertyFilter.filterOutAllExcept("url"))
                 .addFilter("filter.Department", SimpleBeanPropertyFilter.filterOutAllExcept("name"));
         mappingJacksonValue.setFilters(filterProvider);
         return mappingJacksonValue;
@@ -24,6 +25,7 @@ public class EmployeeFilter {
         MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(employeeList);
         FilterProvider filterProvider = new SimpleFilterProvider()
                 .addFilter("filter.Employee", SimpleBeanPropertyFilter.serializeAll())
+                .addFilter("filter.EmployeeImage", SimpleBeanPropertyFilter.filterOutAllExcept("url"))
                 .addFilter("filter.Department", SimpleBeanPropertyFilter.filterOutAllExcept("name"));
         mappingJacksonValue.setFilters(filterProvider);
         return mappingJacksonValue;

@@ -40,7 +40,7 @@ public class EmployeeController {
             employeeImage.setUrl(imageService.uploadToLocalFileSystem(multipartFile, DefaultParam.AVATAR, finalEmployee.getId()));
             employeeImageRepository.save(employeeImage);
         });
-        return new ResponseEntity<>("Create succeed", HttpStatus.CREATED);
+        return new ResponseEntity<>("Create succeed!", HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
@@ -51,11 +51,6 @@ public class EmployeeController {
     @GetMapping
     public ResponseEntity getEmployees() {
         return new ResponseEntity<>(employeeFilter.getEmployees(employeeService.getEmployees()), HttpStatus.OK);
-    }
-
-    @GetMapping("/age")
-    public ResponseEntity getEmployeesByAge(@RequestParam("age") Long age) {
-        return new ResponseEntity<>(employeeFilter.getEmployees(employeeService.getEmployeesByAge(age)), HttpStatus.OK);
     }
 
     @GetMapping("/name")

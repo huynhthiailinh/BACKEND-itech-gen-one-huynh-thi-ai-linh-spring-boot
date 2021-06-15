@@ -27,4 +27,7 @@ public class Department {
 
     @OneToMany(mappedBy = "department")
     private List<Employee> employeeList;
+
+    @OneToMany(mappedBy = "department")
+    private List<Like> likes;
 }
